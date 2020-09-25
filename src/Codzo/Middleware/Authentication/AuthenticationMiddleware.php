@@ -4,7 +4,7 @@ namespace Codzo\Middleware\Authentication;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Codzo\Config;
+use Codzo\Config\Config;
 use Codzo\Middleware\Authentication\Validator\IAuthenticationValidator;
 
 class AuthenticationMiddleware
