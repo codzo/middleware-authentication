@@ -10,6 +10,16 @@ class SessionValidator implements IAuthenticationValidator
 
     public function __construct(Request $request=null)
     {
+        $status = session_status(); 
+        if($status == PHP_SESSION_DISABLED) {
+            throw new \Exception('session disabled, can not validate');
+        }
+
+        if($status == PHP_SESSION_NONE ) {
+            if(!session_start()) {
+                throw new \Exception('Failed to init session, can not validate');
+            }
+        }
     }
 
     public function isAuthenticated() : bool
