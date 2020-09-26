@@ -3,6 +3,7 @@
 namespace Codzo\Middleware\Authentication\Validator;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Codzo\Config\Config;
 
 class SessionValidator implements IAuthenticationValidator
 {
