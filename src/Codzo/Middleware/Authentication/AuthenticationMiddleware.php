@@ -17,10 +17,10 @@ class AuthenticationMiddleware
             'authentication.validator.classname'
         );
         if(class_exists($classname)) {
-            $validator = new $classname($request);
+            $validator = new $classname();
 
             if($validator instanceof IAuthenticationValidator) {
-                if($validator->isAuthenticated()) {
+                if($validator->isAuthenticated($request)) {
                     $response = $handler->handle($request);
                     return $response;
                 }

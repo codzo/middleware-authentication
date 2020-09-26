@@ -8,7 +8,7 @@ class SessionValidator implements IAuthenticationValidator
 {
     const SESSION_VARNAME = '_authentication_session_validator_flag';
 
-    public function __construct(Request $request=null)
+    public function __construct()
     {
         $status = session_status(); 
         if($status == PHP_SESSION_DISABLED) {
@@ -22,23 +22,13 @@ class SessionValidator implements IAuthenticationValidator
         }
     }
 
-    public function isAuthenticated() : bool
+    public function isAuthenticated(Request $request=null) : bool
     {
-        return key_exists(self::SESSION_VARNAME, $_SESSION)
-            && $_SESSION[self::SESSION_VARNAME];
-    }
-
-    public function authenticate() : self
-    {
-        $_SESSION[self::SESSION_VARNAME] = true;
-
-        return $this;
-    }
-
-    public function revoke() : self
-    {
-        unset($_SESSION[self::SESSION_VARNAME]);
-
-        return $this;
+        $config = new Config();
+        $varname = $config->get('authentication.sessionvalidator.session.varname');
+        $value = $config->get('authentication.sessionvalidator.session.value');
+        return $varname
+                && key_exists($varname, $_SESSION)
+                && $_SESSION[$varname]==$value;
     }
 }
