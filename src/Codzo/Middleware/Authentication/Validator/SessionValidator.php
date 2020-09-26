@@ -24,7 +24,7 @@ class SessionValidator implements IAuthenticationValidator
 
     public function isAuthenticated() : bool
     {
-        return key_exists($_SESSION[self::SESSION_VARNAME])
+        return key_exists(self::SESSION_VARNAME, $_SESSION)
             && $_SESSION[self::SESSION_VARNAME];
     }
 

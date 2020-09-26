@@ -1,15 +1,16 @@
 <?php
 namespace Codzo\Middleware\Authentication;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Psr7\Response;
 use Codzo\Config\Config;
 use Codzo\Middleware\Authentication\Validator\IAuthenticationValidator;
 
 class AuthenticationMiddleware
 {
-    public function __invoke(Request $request, RequestHandler $handler): Response
+    public function __invoke(Request $request, RequestHandler $handler): ResponseInterface
     {
         $config = new Config();
         $classname = $config->get(
@@ -26,7 +27,10 @@ class AuthenticationMiddleware
             }
         }
 
-        $response->getBody()->write('Not permitted');
-        return $response;
+        $response = new Response();
+        $redirect_url = $config->get("authentication.redirect.url", '/login');
+        return $response
+            ->withHeader('Location', $redirect_url)
+            ->withStatus(302);
     }
 }
