@@ -1,9 +1,9 @@
 {
     "name": "codzo/middleware-authentication",
-    "type": "app",
     "description": "Slim 4 Middleware for authentication",
     "keywords": ["codzo", "slim", "middleware", "authentication"],
     "minimum-stability": "dev",
+    "license": "MIT",
     "prefer-stable": true,
     "authors": [
         {
