@@ -60,4 +60,4 @@ Settings:
     The pattern of the expected identifier. If session data matches this pattern, current use will be considered as authenticated.
 
     Example: 
-    `.*`to match any string.
+    `.*` to match any string.
