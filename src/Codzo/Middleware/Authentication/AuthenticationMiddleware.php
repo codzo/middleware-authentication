@@ -7,6 +7,7 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Psr7\Response;
 use Codzo\Config\Config;
 use Codzo\Middleware\Authentication\Validator\IAuthenticationValidator;
+use Codzo\Middleware\Authentication\Validator\SessionValidator;
 
 class AuthenticationMiddleware
 {
@@ -14,7 +15,8 @@ class AuthenticationMiddleware
     {
         $config = new Config();
         $classname = $config->get(
-            'authentication.validator.classname'
+            'authentication.validator.classname',
+            SessionValidator::class
         );
         if(class_exists($classname)) {
             $validator = new $classname();
