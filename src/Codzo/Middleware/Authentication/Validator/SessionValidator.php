@@ -3,6 +3,7 @@
 namespace Codzo\Middleware\Authentication\Validator;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Container\ContainerInterface;
 use Codzo\Config\Config;
 
 class SessionValidator implements IAuthenticationValidator
@@ -10,7 +11,9 @@ class SessionValidator implements IAuthenticationValidator
     const DEFAULT_SESSION_KEY     = 'AUTHENTICATION_IDENTIFIER';
     const DEFAULT_SESSION_PATTERN = '.+';
 
-    public function __construct()
+    protected $containeri;
+
+    public function __construct(ContainerInterface $ci=null)
     {
         $status = session_status(); 
         if($status == PHP_SESSION_DISABLED) {
@@ -22,6 +25,8 @@ class SessionValidator implements IAuthenticationValidator
                 throw new \Exception('Failed to init session, can not validate');
             }
         }
+
+        $this->container = $ci;
     }
 
     public function isAuthenticated(Request $request=null) : bool
