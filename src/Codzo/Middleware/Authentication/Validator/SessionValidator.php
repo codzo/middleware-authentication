@@ -7,7 +7,8 @@ use Codzo\Config\Config;
 
 class SessionValidator implements IAuthenticationValidator
 {
-    const SESSION_VARNAME = '_authentication_session_validator_flag';
+    const DEFAULT_SESSION_KEY     = 'AUTHENTICATION_IDENTIFIER';
+    const DEFAULT_SESSION_PATTERN = '.+';
 
     public function __construct()
     {
@@ -26,10 +27,19 @@ class SessionValidator implements IAuthenticationValidator
     public function isAuthenticated(Request $request=null) : bool
     {
         $config = new Config();
-        $varname = $config->get('authentication.sessionvalidator.session.varname');
-        $value = $config->get('authentication.sessionvalidator.session.value');
-        return $varname
-                && key_exists($varname, $_SESSION)
-                && $_SESSION[$varname]==$value;
+        $key = $config->get(
+            'authentication.sessionvalidator.key',
+            static::DEFAULT_SESSION_KEY
+        );
+        $pattern = $config->get(
+            'authentication.sessionvalidator.pattern',
+            static::DEFAULT_SESSION_PATTERN
+        );
+        return $key
+                && key_exists($key, $_SESSION)
+                && preg_match(
+                    '/'.$pattern.'/',
+                    $_SESSION[$key]
+                );
     }
 }
